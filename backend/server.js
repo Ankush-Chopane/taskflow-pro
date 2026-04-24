@@ -10,8 +10,15 @@ const app = express();
 
 // ─── MIDDLEWARE ───────────────────────────────────────────────────────────────
 const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [process.env.FRONTEND_URL || 'http://localhost:3000']
+  ? [
+      process.env.FRONTEND_URL || 'https://taskflow-pro-ankush-5757.vercel.app',
+      'https://taskflow-pro-ankush-5757.vercel.app',
+      'http://localhost:3000',
+      'http://localhost:5173'
+    ]
   : ['http://localhost:3000', 'http://localhost:5173'];
+
+console.log('🔒 CORS allowed origins:', allowedOrigins);
 
 app.use(cors({
   origin: allowedOrigins,
