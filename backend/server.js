@@ -30,10 +30,7 @@ if (!process.env.MONGO_URI) {
   console.error('❌ Available env vars:', Object.keys(process.env).filter(k => k.includes('MONGO') || k.includes('URI')));
 }
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected successfully');
     console.log('📍 Connected to:', process.env.MONGO_URI.replace(/:[^:]*@/, ':****@'));
