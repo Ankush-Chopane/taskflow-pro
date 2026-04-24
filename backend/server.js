@@ -21,9 +21,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ─── DATABASE ─────────────────────────────────────────────────────────────────
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB error:', err));
+console.log('🔍 Attempting MongoDB connection...');
+console.log('📌 MONGO_URI exists:', !!process.env.MONGO_URI);
+console.log('📌 NODE_ENV:', process.env.NODE_ENV);
+
+if (!process.env.MONGO_URI) {
+  console.error('❌ CRITICAL: MONGO_URI not set in environment variables!');
+  console.error('❌ Available env vars:', Object.keys(process.env).filter(k => k.includes('MONGO') || k.includes('URI')));
+}
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => {
+    console.log('✅ MongoDB connected successfully');
+    console.log('📍 Connected to:', process.env.MONGO_URI.replace(/:[^:]*@/, ':****@'));
+  })
+  .catch(err => {
+    console.error('❌ MongoDB error:', err.message);
+    console.error('❌ Full error:', err);
+  });
 
 // ─── ROUTES ───────────────────────────────────────────────────────────────────
 app.use('/api/auth',      require('./routes/auth'));
@@ -72,6 +90,17 @@ app.use((err, req, res, next) => {
 
 // ─── START ────────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
+
+// Startup diagnostics
+console.log('\n🔧 ═════════════════════════════════════════════════════════════');
+console.log('📋 ENVIRONMENT VARIABLES CHECK:');
+console.log(`✔ MONGO_URI: ${process.env.MONGO_URI ? '✅ SET' : '❌ MISSING'}`);
+console.log(`✔ JWT_SECRET: ${process.env.JWT_SECRET ? '✅ SET' : '❌ MISSING'}`);
+console.log(`✔ GROQ_API_KEY: ${process.env.GROQ_API_KEY ? '✅ SET' : '❌ MISSING'}`);
+console.log(`✔ NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+console.log(`✔ PORT: ${PORT}`);
+console.log('🔧 ═════════════════════════════════════════════════════════════\n');
+
 app.listen(PORT, () => {
   console.log(`🚀 TaskFlow API running on http://localhost:${PORT}`);
 });
