@@ -9,8 +9,12 @@ dotenv.config();
 const app = express();
 
 // ─── MIDDLEWARE ───────────────────────────────────────────────────────────────
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? [process.env.FRONTEND_URL || 'http://localhost:3000']
+  : ['http://localhost:3000', 'http://localhost:5173'];
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173'],
+  origin: allowedOrigins,
   credentials: true,
 }));
 app.use(express.json());
