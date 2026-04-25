@@ -19,7 +19,7 @@ services:
       - key: GROQ_API_KEY
         sync: false
       - key: FRONTEND_URL
-        value: https://your-vercel-frontend-url.vercel.app
+        value: https://taskflow-pro-ankush-5757.vercel.app
       - key: EMAIL_HOST
         value: smtp.gmail.com
       - key: EMAIL_PORT
