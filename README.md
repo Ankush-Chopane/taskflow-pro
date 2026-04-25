@@ -18,7 +18,7 @@ taskflow/
 │   ├── middleware/
 │   │   └── auth.js
 │   ├── server.js
-│   ├── .env
+│   ├── .env.example
 │   └── package.json
 │
 └── frontend/                 ← React + Vite
@@ -320,6 +320,9 @@ npm install
 ## Environment Variables Summary
 
 ### backend/.env
+
+Create this file locally from `backend/.env.example`. Do not commit the real `.env`.
+
 ```
 PORT=5000
 MONGO_URI=mongodb+srv://...
@@ -329,4 +332,8 @@ NODE_ENV=development
 ```
 
 ### frontend (for production only)
-Update `src/utils/api.js` baseURL to your deployed backend URL.
+Set `VITE_API_URL` in Vercel to your deployed backend API URL, for example:
+
+```
+https://your-render-service.onrender.com/api
+```
