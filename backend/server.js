@@ -56,6 +56,7 @@ app.use('/api/stats',     require('./routes/stats'));
 app.use('/api/ai',        require('./routes/ai'));
 
 // Health check
+app.get('/', (req, res) => res.json({ status: 'OK', service: 'TaskFlow API', docs: '/api' }));
 app.get('/api', (req, res) => res.json({ status: 'OK', service: 'TaskFlow API' }));
 app.get('/api/health', (req, res) => res.json({ status: 'OK', time: new Date() }));
 
