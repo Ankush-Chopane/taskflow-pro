@@ -1,17 +1,35 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const User = require('./models/User');
 const Task = require('./models/Task');
 const Goal = require('./models/Goal');
 
+dotenv.config();
+
+const DEMO_USER = {
+  name: 'Demo User',
+  email: 'demo@taskflow.com',
+  password: 'demo123',
+};
+
 async function seed() {
   try {
-    await mongoose.connect('mongodb://127.0.0.1:27017/taskflow');
+    if (!process.env.MONGO_URI) {
+      throw new Error('MONGO_URI is required to seed demo data');
+    }
+
+    await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to MongoDB for seeding...');
 
-    const user = await User.findOne({ email: 'demo@example.com' });
+    let user = await User.findOne({ email: DEMO_USER.email }).select('+password');
     if (!user) {
-      console.error('User not found. Please register demo@example.com first.');
-      process.exit(1);
+      user = await User.create(DEMO_USER);
+      console.log(`Created demo user: ${DEMO_USER.email}`);
+    } else {
+      user.name = DEMO_USER.name;
+      user.password = DEMO_USER.password;
+      await user.save();
+      console.log(`Reset demo user password: ${DEMO_USER.email}`);
     }
 
     const userId = user._id;

@@ -3,7 +3,7 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "env": {
-    "VITE_API_URL": "https://taskflow-backend-pntp.onrender.com"
+    "VITE_API_URL": "https://taskflow-backend-pntp.onrender.com/api"
   },
   "rewrites": [
     {
